@@ -17,6 +17,7 @@ class Sysinfo(Plugin):
 	def __init__(self):
 		self.name = "Sysinfo"
 		self.description = "Display system info with \"/sysinfo\""
+		self.version = "2.0"
 
 
 	def input(self,client,name,text):

@@ -5,7 +5,7 @@ import random
 grab.py
 
 This plugin will grab a nickname that is currently in use.
-It will try to change the client's nickname every 3-12 seconds until
+It will try to change the client's nickname every 5-20 seconds until
 the client has attained the desired nickname.
 
 '''
@@ -16,8 +16,8 @@ class NicknameGrabber(Plugin):
         self.name = "Nickname Grabber"
         self.description = "Grabs a nickname"
         
-        self.author = None
-        self.version = None
+        self.author = "Dan Hetrick"
+        self.version = "1.0"
         self.website = None
         self.source = None
         
@@ -26,19 +26,19 @@ class NicknameGrabber(Plugin):
         self.target = None
 
     def input(self,client,name,text):
-        if text.lower()=="/grab":
-            self.print("Usage: /grab NICKNAME")
-            return True
         
         tokens = text.split()
-        if len(tokens)==2:
+        
+        if len(tokens)==1:
             if tokens[0].lower()=="/grab":
-                self.target = tokens[1]
-                self.active = True
+                self.target = self.userinput("Nickname to grab")
+                if self.target!=None:
+                    self.print("Grabbing nickname "+self.target)
+                    self.active = True
                 return True
         
-        if len(tokens)>2 and text.lower()=="/grab":
-            self.print("Usage: /grab NICKNAME")
+        if len(tokens)>1 and tokens[0].lower()=="/grab":
+            self.print("Usage: /grab")
             return True
 
     def tick(self,client):
@@ -50,4 +50,4 @@ class NicknameGrabber(Plugin):
             else:
                 if self.uptime()>=self.next:
                     client.setNick(self.target)
-                    self.next = self.uptime() + random.randint(3,12)
+                    self.next = self.uptime() + random.randint(5,20)

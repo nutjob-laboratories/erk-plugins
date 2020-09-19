@@ -28,13 +28,13 @@ class DiceRoller(Plugin):
                 try:
                     number_of_dice = int(number_of_dice)
                 except:
-                    self.print("Usage: /roll NUMBER_OF_DICE NUMBER_OF_SIDES")
+                    self.sysmsg("Usage: /roll NUMBER_OF_DICE NUMBER_OF_SIDES")
                     return True
                 number_of_sides = tokens[2]
                 try:
                     number_of_sides = int(number_of_sides)
                 except:
-                    self.print("Usage: /roll NUMBER_OF_DICE NUMBER_OF_SIDES")
+                    self.sysmsg("Usage: /roll NUMBER_OF_DICE NUMBER_OF_SIDES")
                     return True
                 
                 total = 0
@@ -51,7 +51,7 @@ class DiceRoller(Plugin):
                 try:
                     number_of_sides = int(number_of_sides)
                 except:
-                    self.print("Usage: /roll NUMBER_OF_SIDES")
+                    self.sysmsg("Usage: /roll NUMBER_OF_SIDES")
                     return True
                     
                 roll = random.randint(1,number_of_sides)
@@ -60,6 +60,6 @@ class DiceRoller(Plugin):
         
         if len(tokens)==1:
             if tokens[0].lower()=="/roll":
-                self.print("Usage: /roll NUMBER_OF_SIDES <b>or</b> /roll NUM_DICE NUM_SIDES")
+                self.sysmsg("Usage: /roll NUMBER_OF_SIDES <b>or</b> /roll NUM_DICE NUM_SIDES")
                 return True
                 

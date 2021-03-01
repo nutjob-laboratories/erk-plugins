@@ -17,8 +17,12 @@ class Sysinfo(Plugin):
 	def __init__(self):
 		self.name = "Sysinfo"
 		self.description = "Display system info with \"/sysinfo\""
-		self.version = "2.0"
+		self.version = "2.2"
+		self.author = "Dan Hetrick"
+		self.website = "https://github.com/nutjob-laboratories/erk"
 
+	def load(self):
+		self.autocomplete("/sysinfo","/sysinfo")
 
 	def input(self,client,name,text):
 
@@ -31,9 +35,9 @@ class Sysinfo(Plugin):
 
 		output = []
 
-		output.append("\x02Client:\x0F \x1D"+self.info()+"\x0F")
+		output.append("\x02Client:\x0F "+self.info())
 
-		output.append("\x02OS:\x0F \x1D"+platform.platform(terse=0)+"\x0F")
+		output.append("\x02OS:\x0F "+platform.platform(terse=0))
 		
 		cpucount = psutil.cpu_count()
 		cpu_usage = psutil.cpu_percent()
@@ -41,7 +45,7 @@ class Sysinfo(Plugin):
 		cpu_freq = psutil.cpu_freq()
 		cpu_freq = str(cpu_freq.max/1000)+" gHz"
 
-		output.append("\x02CPU:\x0F \x1D"+cpu_type+" ("+cpu_freq+", "      +str(cpu_usage)+"% used, "+str(cpucount)+" cores)\x0F")
+		output.append("\x02CPU:\x0F "+cpu_type+" ("+cpu_freq+", "      +str(cpu_usage)+"% used, "+str(cpucount)+" cores)")
 
 		ri = psutil.virtual_memory()
 
@@ -50,8 +54,8 @@ class Sysinfo(Plugin):
 		available_ram = convert_size(ri.available)
 		percent_ram = ri.percent
 
-		output.append("\x02RAM:\x0F \x1D"+total_ram+" total ("+used_ram+" free)\x0F")
+		output.append("\x02RAM:\x0F "+total_ram+" total ("+used_ram+" free)")
 
-		client.msg(name,' • '.join(output))
+		client.msg(name,' Ã¢ÂÂ¢ '.join(output))
 
 		return True

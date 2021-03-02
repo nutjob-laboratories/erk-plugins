@@ -23,6 +23,7 @@ class Sysinfo(Plugin):
 
 	def load(self):
 		self.autocomplete("/sysinfo","/sysinfo")
+		self.help("/sysinfo","Displays system information")
 
 	def input(self,client,name,text):
 
@@ -56,6 +57,6 @@ class Sysinfo(Plugin):
 
 		output.append("\x02RAM:\x0F "+total_ram+" total ("+used_ram+" free)")
 
-		client.msg(name,' Ã¢ÂÂ¢ '.join(output))
+		client.msg(name,' - '.join(output))
 
 		return True

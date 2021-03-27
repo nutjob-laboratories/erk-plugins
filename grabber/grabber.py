@@ -80,4 +80,6 @@ class NickGrabber(Plugin):
 		# Add our new command, /grab, to the autocompleter
 		self.autocomplete("/grab","/grab ")
 
+		# Add our new command to the /help text
+		self.help("/grab NICKNAME","Grabs an in-use nickname")
 

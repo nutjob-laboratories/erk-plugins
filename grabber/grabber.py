@@ -5,15 +5,15 @@ _ERK_PLUGIN_ = "Nick Grabber"
 
 class NickGrabber(Plugin):
 	"""
-		Nick Grabber plugin for the Ərk IRC client
+	
+		NICK GRABBER
 
-		Creates a new command, /grab
-		Usage: /grab DESIRED_NICKNAME
+		An Ərk plugin to automate trying to grab
+		a nickname that someone else is using.
+		Creates a new command, /grab:
 
-		It attempts to change the client's nickname to the
-		desired nickname at random intervals (every 1 to 20
-		seconds). Once the desired nickname has been obtained,
-		the plugin stops trying to grab the nick.
+		/grab DESIRED_NICKNAME
+
 	"""
 
 	NAME = "Nickname Grabber"
@@ -24,43 +24,60 @@ class NickGrabber(Plugin):
 		self.nickname_to_grab = None
 		self.wait = 0
 
-
 	def input(self,window,text):
+
+		# Here, we're going to create our new command
 		
+		# First, tokenize the user input
 		tokens = text.split()
 
-		# If /grab is called without any arguments,
-		# then display usage text and exit
-		if len(tokens)==1 and tokens[0].lower()=="/grab":
-			self.print("Usage: /grab NICKNAME")
-			return True
+		# Now, look for our command in the tokens
+		# If the command is issued with no argument
+		# or too many arguments, show usage text
+		if len(tokens)>1 and tokens[0].lower()=="/grab":
+			if len(tokens)!=2:
+				self.print("Usage: /grab NICKNAME")
+				return True
 
-		# If /grab is called with *ONE* argument, then
-		# take that argument, and try to change the
-		# user's nick
+		# If our command is issued with *one* argument,
+		# the use the argument as our desired nickname,
+		# and start the "nick grab" process
 		if len(tokens)==2 and tokens[0].lower()=="/grab":
 			tokens.pop(0)
 			self.nickname_to_grab = tokens.pop(0)
 
-			ut = self.uptime()
-			if ut: self.wait = ut + random.randint(1,20)
+			# Let the user know that the "grabbing" process
+			# has begun
 			self.print("Grabbing "+self.nickname_to_grab+"...")
 			return True
 
-		# This isn't really required, but
-		# it's nice to explicitely exit :-)
-		return False
-
-
 	def tick(self,uptime):
 		
+		# See if we're still trying to grab the nickname
 		if self.nickname_to_grab!=None:
+
+			# Check to see if we've grabbed the nickname
 			if self.nickname_to_grab == self.irc.nickname:
+
+				# The nickname is grabbed!
+				# Stop the grabbing process
 				self.nickname_to_grab = None
 				self.wait = 0
 			else:
+
+				# It's time to try and grab the nickname!
 				if self.wait < uptime:
+
+					# Try to grab the nickname
 					self.irc.setNick(self.nickname_to_grab)
+
+					# If this doesn't work, we'll try again
+					# in 1 to 20 seconds
 					self.wait = uptime + random.randint(1,20)
+
+	def registered(self):
+
+		# Add our new command, /grab, to the autocompleter
+		self.autocomplete("/grab","/grab ")
 
 
